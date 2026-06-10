@@ -28,7 +28,7 @@ Três visões alternáveis (90 dias, 180 dias, oferta especial), filtros por dis
 
 **Resultado:** time comercial passou a consultar as ofertas de forma autônoma, sem retrabalho. Parceiros conseguiram navegar pelas ofertas sem intermediação — eliminando o gargalo de atendimento para dúvidas operacionais.
 
-→ **[Abrir demo](https://yasminalves.github.io/ai-automation-portfolio/demo-site-promocional/)** _(GitHub Pages)_
+→ **[Abrir demo](https://yasloopes.github.io/ai-automation-portfolio/demo-site-promocional/)** _(GitHub Pages)_
 
 ---
 
