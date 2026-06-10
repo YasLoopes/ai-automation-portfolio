@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel de Ofertas (DEMO) — Portfólio</title>
+<style>
+  :root {
+    --green: #1a7a4a;
+    --green-light: #e8f5ee;
+    --green-mid: #2ea066;
+    --amber-light: #fef3c7;
+    --blue: #2563eb;
+    --blue-light: #eff6ff;
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-900: #111827;
+    --radius: 10px;
+    --radius-sm: 6px;
+    --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-900);
+    min-height: 100vh;
+    padding: 0 0 3rem;
+  }
+  /* ---- BANNER DEMO (acrescentado na sanitização) ---- */
+  .demo-banner {
+    background: #fef3c7; color: #92400e; font-size: 12.5px; line-height: 1.4;
+    padding: 9px 16px; text-align: center; font-weight: 600;
+    border-bottom: 1px solid #fde68a;
+  }
+  .demo-banner span { font-weight: 400; opacity: .9; }
+  .top-bar {
+    background: #0a2e17;
+    padding: 0.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .top-bar-text { color: rgba(255,255,255,.4); font-size: 11px; letter-spacing: .3px; }
+  .header-main {
+    background: #0f4f2a;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    border-bottom: 2px solid #1a7a4a;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+  .header-logo-wrap { display: flex; align-items: center; gap: 18px; }
+  .header-logo-block { display: flex; flex-direction: column; gap: 5px; }
+  .header-logo {
+    font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 28px; font-weight: 300; color: #fff; letter-spacing: -.3px; line-height: 1;
+  }
+  .header-logo strong { font-weight: 700; }
+  .header-grupo { display: flex; align-items: center; gap: 5px; }
+  .header-divider { width: 1px; height: 38px; background: rgba(255,255,255,.2); flex-shrink: 0; }
+  .header-titulo { font-size: 13px; color: rgba(255,255,255,.7); font-weight: 400; line-height: 1.45; max-width: 360px; }
+  .vigencia-pill {
+    font-size: 12px;
+    background: rgba(255,255,255,.1);
+    color: rgba(255,255,255,.85);
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.2);
+    white-space: nowrap;
+  }
+  .container { max-width: 960px; margin: 0 auto; padding: 1.5rem 1rem; }
+
+  /* DESTAQUE */
+  .card-destaque {
+    background: linear-gradient(135deg, #145e38 0%, #1d8a52 100%);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-destaque::before {
+    content:'';position:absolute;right:-30px;top:-30px;
+    width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.06);
+  }
+  .card-destaque::after {
+    content:'';position:absolute;right:60px;bottom:-40px;
+    width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.04);
+  }
+  .destaque-badge {
+    background:#fff;color:var(--green);font-size:11px;font-weight:700;
+    padding:3px 9px;border-radius:20px;letter-spacing:.4px;
+    text-transform:uppercase;display:inline-block;margin-bottom:6px;
+  }
+  .destaque-numero { font-size:52px;font-weight:800;color:#fff;line-height:1;letter-spacing:-2px; }
+  .destaque-numero sup { font-size:24px;font-weight:700;letter-spacing:0;vertical-align:super; }
+  .destaque-sub { font-size:13px;color:rgba(255,255,255,.8);margin-top:4px; }
+  .destaque-info { flex:1;min-width:200px; }
+  .destaque-titulo { font-size:17px;font-weight:700;color:#fff;margin-bottom:8px;line-height:1.3; }
+  .destaque-condicoes { display:flex;flex-direction:column;gap:5px; }
+  .destaque-cond {
+    font-size:13px;color:rgba(255,255,255,.9);
+    background:rgba(255,255,255,.12);border-radius:var(--radius-sm);
+    padding:5px 10px;display:inline-flex;align-items:center;gap:6px;
+  }
+  .destaque-cond-dot { width:5px;height:5px;border-radius:50%;background:#6ee7b7;flex-shrink:0; }
+
+  /* ALERTA SEM VACÂNCIA */
+  .alerta-sv {
+    background:var(--gray-100);border:1px solid var(--gray-200);
+    border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:1.25rem;display:none;
+  }
+  .alerta-sv-titulo { font-size:12px;font-weight:600;color:var(--gray-500);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px; }
+  .alerta-tags { display:flex;flex-wrap:wrap;gap:5px; }
+  .alerta-tag { font-size:12px;color:var(--gray-500);background:#fff;border:1px solid var(--gray-200);padding:2px 10px;border-radius:20px; }
+
+  /* TABS */
+  .tabs { display:flex;gap:6px;margin-bottom:1.25rem;flex-wrap:wrap; }
+  .tab {
+    padding:8px 18px;font-size:13px;font-weight:500;
+    border-radius:var(--radius-sm);border:1px solid var(--gray-200);
+    background:#fff;color:var(--gray-500);cursor:pointer;transition:all .15s;
+  }
+  .tab.ativo { background:var(--green);color:#fff;border-color:var(--green); }
+  .tab:hover:not(.ativo) { background:var(--gray-100);color:var(--gray-700); }
+
+  .aviso-fid {
+    font-size:13px;color:var(--gray-600);background:var(--blue-light);
+    border-left:3px solid var(--blue);border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+    padding:10px 14px;margin-bottom:1.25rem;display:none;
+  }
+
+  /* FILTROS */
+  .filtros { display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-bottom:1.25rem; }
+  .fg label { font-size:12px;color:var(--gray-500);display:block;margin-bottom:4px;font-weight:500; }
+  .fg select {
+    width:100%;padding:8px 10px;font-size:13px;
+    border:1px solid var(--gray-200);border-radius:var(--radius-sm);
+    background:#fff;color:var(--gray-700);appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 10px center;cursor:pointer;
+  }
+  .fg select:focus { outline:none;border-color:var(--green); }
+  option.sv { color:var(--gray-400); }
+
+  /* CARDS */
+  .cards { display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.25rem; }
+  .card { background:#fff;border:1px solid var(--gray-200);border-radius:var(--radius);padding:.9rem 1rem;box-shadow:var(--shadow); }
+  .cl { font-size:11px;color:var(--gray-400);margin-bottom:3px;font-weight:500;text-transform:uppercase;letter-spacing:.4px; }
+  .cv { font-size:24px;font-weight:700;color:var(--gray-900); }
+
+  /* TABELA */
+  .rl { font-size:12px;font-weight:600;color:var(--gray-400);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px; }
+  .tw { overflow-x:auto;border:1px solid var(--gray-200);border-radius:var(--radius);background:#fff;box-shadow:var(--shadow); }
+  table { width:100%;border-collapse:collapse;font-size:13px; }
+  thead tr { background:var(--gray-50); }
+  th { font-size:11px;font-weight:600;color:var(--gray-400);text-align:left;padding:10px 14px;border-bottom:1px solid var(--gray-200);white-space:nowrap;text-transform:uppercase;letter-spacing:.4px; }
+  td { padding:10px 14px;border-bottom:1px solid var(--gray-100);color:var(--gray-700); }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:var(--gray-50); }
+
+  .bd { display:inline-block;padding:3px 9px;border-radius:20px;font-weight:600;font-size:12px; }
+  .bd-alto { background:#dcfce7;color:#166534; }
+  .bd-medio { background:#fef9c3;color:#854d0e; }
+  .bd-baixo { background:var(--blue-light);color:#1d4ed8; }
+  .bd-esp { background:#ede9fe;color:#5b21b6; }
+  .bd-promo { background:#fff7ed;color:#9a3412;border:1px solid #fed7aa; }
+  .bp { display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:500; }
+  .bp-90 { background:var(--blue-light);color:#1d4ed8; }
+  .bp-180 { background:#dcfce7;color:#166534; }
+  .bf { display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;background:var(--amber-light);color:#92400e;font-weight:500; }
+  .vazio { text-align:center;padding:2.5rem;color:var(--gray-400);font-size:14px; }
+  .bd-tensao { display:inline-block;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:.3px; }
+  .bd-mt { background:#fef3c7;color:#92400e; }
+  .bd-bt { background:#eff6ff;color:#1d4ed8; }
+  .bd-cod { display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:600;background:#f3f4f6;color:#374151;font-family:monospace; }
+  .footer { text-align:center;margin-top:2rem;font-size:12px;color:var(--gray-400); }
+
+  @media(max-width:600px){
+    .destaque-numero{font-size:40px;}
+    .card-destaque{padding:1rem;}
+    .top-bar{padding:.75rem 1rem;}
+  }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  Versão demonstrativa — portfólio
+  <span>Os nomes das distribuidoras são reais; os códigos promocionais e as condições das tabelas são ilustrativos.</span>
+</div>
+
+<div class="top-bar">
+  <span class="top-bar-text">painel-demo · portfólio</span>
+</div>
+<div class="header-main">
+  <div class="header-logo-wrap">
+    <div class="header-logo-block">
+      <div class="header-logo">painel<strong>ofertas</strong></div>
+    </div>
+    <div class="header-divider"></div>
+    <div class="header-titulo">Painel Ofertas Energia Solar Compartilhada 2º Trimestre (amostra de produto)</div>
+  </div>
+  <span class="vigencia-pill">Vigência: 01/04/2026 até 30/06/2026</span>
+</div>
+
+<div class="container">
+
+  <div class="card-destaque">
+    <div>
+      <span class="destaque-badge">Oferta em destaque — CEMIG</span>
+      <div class="destaque-numero">50<sup>%</sup></div>
+      <div class="destaque-sub">nos primeiros 3 meses</div>
+    </div>
+    <div class="destaque-info">
+      <div class="destaque-titulo">Reduza os custos da sua empresa com energia elétrica</div>
+      <div class="destaque-condicoes">
+        <span class="destaque-cond"><span class="destaque-cond-dot"></span>Consumo acima de 5.000 kWh/mês</span>
+        <span class="destaque-cond"><span class="destaque-cond-dot"></span>Contrato de 12 meses · Aviso prévio de 90 dias</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="alerta-sv" id="alerta-sv">
+    <div class="alerta-sv-titulo">Sem vacância no momento</div>
+    <div class="alerta-tags" id="alerta-tags"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab ativo" onclick="mudarAba('padrao90')">Padrão — 90 dias</button>
+    <button class="tab" onclick="mudarAba('padrao180')">Padrão — 180 dias</button>
+    <button class="tab" onclick="mudarAba('especial')">Especial — Com fidelidade</button>
+  </div>
+
+  <div id="aviso-fid" class="aviso-fid">
+    Ofertas com fidelidade exigem <strong>90 dias de aviso prévio</strong> e assinatura de termo de fidelidade. A bonificação pode ser concedida no 1º ou no 12º mês, conforme a condição aplicada. <em>(condições ilustrativas)</em>
+  </div>
+
+  <div class="filtros">
+    <div class="fg"><label>Distribuidora</label><select id="fd" onchange="atualizar()"><option value="">Todas</option></select></div>
+    <div class="fg"><label>Faixa de consumo</label><select id="ff" onchange="atualizar()"><option value="">Todas</option></select></div>
+    <div id="fg-fid" class="fg" style="display:none">
+      <label>Fidelidade</label>
+      <select id="ffid" onchange="atualizar()">
+        <option value="">Todas</option>
+        <option value="12 MESES">12 meses</option>
+        <option value="24 MESES">24 meses</option>
+        <option value="36 MESES">36 meses</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="cards" id="resumo"></div>
+  <p class="rl" id="rl">Resultados</p>
+  <div class="tw">
+    <table><thead id="thead"></thead><tbody id="tbody"></tbody></table>
+    <div class="vazio" id="vazio" style="display:none">Nenhum resultado para os filtros selecionados.</div>
+  </div>
+
+  <div class="footer">Painel demonstrativo · descontos/códigos/condições fictícios · uso exclusivo para portfólio</div>
+</div>
+
+<script>
+// =====================================================================
+// Nomes de distribuidoras: REAIS (informação pública).
+// Descontos (dv), códigos (cod) e condições (desc): FICTÍCIOS (DEMO).
+// A lógica (filtros, abas, cálculo de resumo) é idêntica à versão original.
+// =====================================================================
+const SEM_VAGA=["EMR","EMS","EMT","ESS - SP","EDP SP","LIGHT"];
+const SEM_VAGA_LABEL={"EMR":"EMR — RJ","EMS":"EMS","EMT":"EMT","ESS - SP":"ESS — SP","EDP SP":"EDP — SP","LIGHT":"LIGHT"};
+
+function bdDesc(dv,esp,tipo){
+  if(esp&&tipo==='Promocional') return `<span class="bd bd-promo">${dv}%+</span>`;
+  if(esp) return `<span class="bd bd-esp">${dv}%+</span>`;
+  if(dv>=25) return `<span class="bd bd-alto">${dv}%</span>`;
+  if(dv>=17) return `<span class="bd bd-medio">${dv}%</span>`;
+  return `<span class="bd bd-baixo">${dv}%</span>`;
+}
+
+function bdTensao(f){
+  const mt=(f==="Acima de 1.000 kWh"||f==="Acima de 5.000 kWh");
+  return mt?`<span class="bd-tensao bd-mt">MT</span>`:`<span class="bd-tensao bd-bt">BT</span>`;
+}
+
+// dv/cod FICTÍCIOS
+const P90=[
+  {d:"LIGHT",f:"—",dv:0,cod:null},
+  {d:"EMR",f:"—",dv:0,cod:null},
+  {d:"EMS",f:"—",dv:0,cod:null},
+  {d:"EMT",f:"—",dv:0,cod:null},
+  {d:"ESS - SP",f:"—",dv:0,cod:null},
+  {d:"EDP SP",f:"—",dv:0,cod:null},
+  {d:"CEMIG",f:"Acima de 250 kWh",dv:19,cod:"DEMO-9001"},
+  {d:"CEMIG",f:"Acima de 500 kWh",dv:21,cod:"DEMO-9002"},
+  {d:"CEMIG",f:"Acima de 1.000 kWh",dv:25,cod:"DEMO-9003"},
+  {d:"CEMIG",f:"Acima de 5.000 kWh",dv:29,cod:"DEMO-9004"},
+  {d:"CPFL PAULISTA",f:"Acima de 250 kWh",dv:11,cod:"DEMO-9005"},
+  {d:"CPFL PAULISTA",f:"Acima de 500 kWh",dv:12,cod:"DEMO-9006"},
+  {d:"CPFL PAULISTA",f:"Acima de 1.000 kWh",dv:13,cod:"DEMO-9007"},
+  {d:"CPFL PAULISTA",f:"Acima de 5.000 kWh",dv:15,cod:"DEMO-9008"},
+  {d:"ENEL CE",f:"Acima de 250 kWh",dv:20,cod:"DEMO-9009"},
+  {d:"ENEL CE",f:"Acima de 500 kWh",dv:21,cod:"DEMO-9010"},
+  {d:"ENEL CE",f:"Acima de 1.000 kWh",dv:23,cod:"DEMO-9011"},
+  {d:"ENEL CE",f:"Acima de 5.000 kWh",dv:26,cod:"DEMO-9012"},
+  {d:"ENEL RJ",f:"Acima de 250 kWh",dv:12,cod:"DEMO-9013"},
+  {d:"ENEL RJ",f:"Acima de 500 kWh",dv:13,cod:"DEMO-9014"},
+  {d:"ENEL RJ",f:"Acima de 1.000 kWh",dv:15,cod:"DEMO-9015"},
+  {d:"ENEL RJ",f:"Acima de 5.000 kWh",dv:17,cod:"DEMO-9016"},
+  {d:"EQUATORIAL MA",f:"Acima de 250 kWh",dv:15,cod:"DEMO-9017"},
+  {d:"EQUATORIAL MA",f:"Acima de 500 kWh",dv:16,cod:"DEMO-9018"},
+  {d:"EQUATORIAL MA",f:"Acima de 1.000 kWh",dv:19,cod:"DEMO-9019"},
+  {d:"EQUATORIAL MA",f:"Acima de 5.000 kWh",dv:24,cod:"DEMO-9020"},
+  {d:"EQUATORIAL PI",f:"Acima de 250 kWh",dv:18,cod:"DEMO-9021"},
+  {d:"EQUATORIAL PI",f:"Acima de 500 kWh",dv:20,cod:"DEMO-9022"},
+  {d:"EQUATORIAL PI",f:"Acima de 1.000 kWh",dv:22,cod:"DEMO-9023"},
+  {d:"EQUATORIAL PI",f:"Acima de 5.000 kWh",dv:25,cod:"DEMO-9024"},
+  {d:"ESS - MG",f:"Acima de 500 kWh",dv:16,cod:"DEMO-9025"},
+  {d:"ESS - MG",f:"Acima de 1.000 kWh",dv:17,cod:"DEMO-9026"},
+  {d:"ESS - MG",f:"Acima de 5.000 kWh",dv:19,cod:"DEMO-9027"},
+  {d:"NEO - PE",f:"Acima de 250 kWh",dv:13,cod:"DEMO-9028"},
+  {d:"NEO - PE",f:"Acima de 500 kWh",dv:14,cod:"DEMO-9029"},
+  {d:"NEO - PE",f:"Acima de 1.000 kWh",dv:16,cod:"DEMO-9030"},
+  {d:"NEO - PE",f:"Acima de 5.000 kWh",dv:23,cod:"DEMO-9031"},
+];
+
+const P180=[
+  {d:"LIGHT",f:"—",dv:0,cod:null},
+  {d:"CEMIG",f:"Acima de 250 kWh",dv:21,cod:"DEMO-8001"},
+  {d:"CEMIG",f:"Acima de 500 kWh",dv:24,cod:"DEMO-8002"},
+  {d:"CEMIG",f:"Acima de 1.000 kWh",dv:29,cod:"DEMO-8003"},
+  {d:"CEMIG",f:"Acima de 5.000 kWh",dv:32,cod:"DEMO-8004"},
+  {d:"CPFL PAULISTA",f:"Acima de 250 kWh",dv:12,cod:"DEMO-8005"},
+  {d:"CPFL PAULISTA",f:"Acima de 500 kWh",dv:13,cod:"DEMO-8006"},
+  {d:"CPFL PAULISTA",f:"Acima de 1.000 kWh",dv:14,cod:"DEMO-8007"},
+  {d:"CPFL PAULISTA",f:"Acima de 5.000 kWh",dv:16,cod:"DEMO-8008"},
+  {d:"ENEL CE",f:"Acima de 250 kWh",dv:22,cod:"DEMO-8009"},
+  {d:"ENEL CE",f:"Acima de 500 kWh",dv:23,cod:"DEMO-8010"},
+  {d:"ENEL CE",f:"Acima de 1.000 kWh",dv:25,cod:"DEMO-8011"},
+  {d:"ENEL CE",f:"Acima de 5.000 kWh",dv:28,cod:"DEMO-8012"},
+  {d:"ENEL RJ",f:"Acima de 250 kWh",dv:13,cod:"DEMO-8013"},
+  {d:"ENEL RJ",f:"Acima de 500 kWh",dv:14,cod:"DEMO-8014"},
+  {d:"ENEL RJ",f:"Acima de 1.000 kWh",dv:16,cod:"DEMO-8015"},
+  {d:"ENEL RJ",f:"Acima de 5.000 kWh",dv:18,cod:"DEMO-8016"},
+  {d:"EQUATORIAL MA",f:"Acima de 250 kWh",dv:17,cod:"DEMO-8017"},
+  {d:"EQUATORIAL MA",f:"Acima de 500 kWh",dv:18,cod:"DEMO-8018"},
+  {d:"EQUATORIAL MA",f:"Acima de 1.000 kWh",dv:21,cod:"DEMO-8019"},
+  {d:"EQUATORIAL MA",f:"Acima de 5.000 kWh",dv:25,cod:"DEMO-8020"},
+  {d:"EQUATORIAL PI",f:"Acima de 250 kWh",dv:20,cod:"DEMO-8021"},
+  {d:"EQUATORIAL PI",f:"Acima de 500 kWh",dv:21,cod:"DEMO-8022"},
+  {d:"EQUATORIAL PI",f:"Acima de 1.000 kWh",dv:24,cod:"DEMO-8023"},
+  {d:"EQUATORIAL PI",f:"Acima de 5.000 kWh",dv:27,cod:"DEMO-8024"},
+  {d:"ESS - MG",f:"Acima de 500 kWh",dv:17,cod:"DEMO-8025"},
+  {d:"ESS - MG",f:"Acima de 1.000 kWh",dv:18,cod:"DEMO-8026"},
+  {d:"ESS - MG",f:"Acima de 5.000 kWh",dv:20,cod:"DEMO-8027"},
+  {d:"NEO - PE",f:"Acima de 250 kWh",dv:19,cod:"DEMO-8028"},
+  {d:"NEO - PE",f:"Acima de 500 kWh",dv:20,cod:"DEMO-8029"},
+  {d:"NEO - PE",f:"Acima de 1.000 kWh",dv:22,cod:"DEMO-8030"},
+  {d:"NEO - PE",f:"Acima de 5.000 kWh",dv:25,cod:"DEMO-8031"},
+];
+
+const ESP=[
+  {d:"LIGHT",f:"—",dv:0,fid:"",tipo:"",cod:null},
+  {d:"EMR",f:"—",dv:0,fid:"",tipo:"",cod:null},
+  {d:"EMS",f:"—",dv:0,fid:"",tipo:"",cod:null},
+  {d:"EMT",f:"—",dv:0,fid:"",tipo:"",cod:null},
+  {d:"ESS - SP",f:"—",dv:0,fid:"",tipo:"",cod:null},
+  {d:"EDP SP",f:"—",dv:0,fid:"",tipo:"",cod:null},
+  {d:"CEMIG",f:"Acima de 5.000 kWh",desc:"45% (3 meses) + 28%",dv:45,fid:"12 MESES",tipo:"Promocional",cod:"DEMO-7001"},
+  {d:"CEMIG",f:"Acima de 5.000 kWh",desc:"34% + 12ª fatura bonificada",dv:34,fid:"36 MESES",tipo:"12º mês",cod:"DEMO-7002"},
+  {d:"CEMIG",f:"Acima de 5.000 kWh",desc:"31% + 1ª fatura bonificada",dv:31,fid:"24 MESES",tipo:"1º mês",cod:"DEMO-7003"},
+  {d:"ENEL CE",f:"Acima de 5.000 kWh",desc:"30% (3 meses) + 20%",dv:30,fid:"12 MESES",tipo:"Promocional",cod:"DEMO-7004"},
+  {d:"ENEL CE",f:"Acima de 5.000 kWh",desc:"28% + 12ª fatura bonificada",dv:28,fid:"24 MESES",tipo:"12º mês",cod:"DEMO-7005"},
+  {d:"EQUATORIAL PI",f:"Acima de 5.000 kWh",desc:"29% + 1ª fatura bonificada",dv:29,fid:"36 MESES",tipo:"1º mês",cod:"DEMO-7006"},
+  {d:"EQUATORIAL MA",f:"Acima de 5.000 kWh",desc:"26% + 12ª fatura bonificada",dv:26,fid:"24 MESES",tipo:"12º mês",cod:"DEMO-7007"},
+  {d:"NEO - PE",f:"Acima de 5.000 kWh",desc:"24% + 1ª fatura bonificada",dv:24,fid:"12 MESES",tipo:"1º mês",cod:"DEMO-7008"},
+];
+
+let aba='padrao90';
+
+function popularFiltros(dados){
+  const fd=document.getElementById('fd');
+  const ff=document.getElementById('ff');
+  const dAtual=fd.value, fAtual=ff.value;
+  const dists=[...new Set(dados.map(x=>x.d))].sort();
+  const faixas=[...new Set(dados.map(x=>x.f))];
+  const ordemF=["Acima de 250 kWh","Acima de 500 kWh","Acima de 1.000 kWh","Acima de 5.000 kWh"];
+  const faixasOrd=ordemF.filter(f=>faixas.includes(f));
+  fd.innerHTML='<option value="">Todas</option>';
+  dists.forEach(d=>{
+    const opt=document.createElement('option');
+    const sv=SEM_VAGA.includes(d);
+    opt.value=d;
+    opt.textContent=sv?`${d} (sem vacância)`:d;
+    if(sv) opt.className='sv';
+    if(d===dAtual) opt.selected=true;
+    fd.appendChild(opt);
+  });
+  ff.innerHTML='<option value="">Todas</option>'+faixasOrd.map(f=>{
+    const mt=(f==="Acima de 1.000 kWh"||f==="Acima de 5.000 kWh");
+    const sel=f===fAtual?' selected':'';
+    return `<option value="${f}"${sel}>${f} ${mt?'(MT)':'(BT)'}</option>`;
+  }).join('');
+}
+
+function mudarAba(a){
+  aba=a;
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    t.classList.toggle('ativo',['padrao90','padrao180','especial'][i]===a);
+  });
+  document.getElementById('aviso-fid').style.display=a==='especial'?'block':'none';
+  document.getElementById('fg-fid').style.display=a==='especial'?'block':'none';
+  popularFiltros(a==='padrao90'?P90:a==='padrao180'?P180:ESP);
+  atualizar();
+}
+
+function atualizar(){
+  const dist=document.getElementById('fd').value;
+  const faixa=document.getElementById('ff').value;
+  const fid=document.getElementById('ffid').value;
+  const dados=aba==='padrao90'?P90:aba==='padrao180'?P180:ESP;
+
+  const svPresentes=dist?(SEM_VAGA.includes(dist)?[dist]:[]):Object.keys(SEM_VAGA_LABEL);
+  document.getElementById('alerta-tags').innerHTML=svPresentes.map(sv=>`<span class="alerta-tag">${SEM_VAGA_LABEL[sv]||sv}</span>`).join('');
+  document.getElementById('alerta-sv').style.display=svPresentes.length?'block':'none';
+
+  let f=dados.filter(x=>
+    (!dist||x.d===dist)&&
+    (!faixa||x.f===faixa)&&
+    (!fid||x.fid===fid)&&
+    !SEM_VAGA.includes(x.d)
+  );
+
+  const esp=aba==='especial';
+  document.getElementById('thead').innerHTML=esp
+    ?`<tr><th>Código Promocional</th><th>Distribuidora</th><th>Tensão</th><th>Faixa</th><th>Condição</th><th>Fidelidade</th><th>Tipo bonificação</th></tr>`
+    :`<tr><th>Código Promocional</th><th>Distribuidora</th><th>Tensão</th><th>Faixa de consumo</th><th>Aviso prévio</th><th>Desconto</th></tr>`;
+
+  const tbody=document.getElementById('tbody');
+  tbody.innerHTML='';
+  document.getElementById('vazio').style.display=f.length?'none':'block';
+
+  f.forEach(x=>{
+    const tr=document.createElement('tr');
+    const codBadge=x.cod?`<span class="bd-cod">${x.cod}</span>`:`<span style="color:var(--gray-400)">—</span>`;
+    if(esp){
+      const tipoBadge=x.tipo==='Promocional'
+        ?`<span class="bd bd-promo" style="font-size:11px">Promocional</span>`
+        :`<span style="font-size:12px;color:var(--gray-500)">${x.tipo}</span>`;
+      tr.innerHTML=`<td>${codBadge}</td><td style="font-weight:600">${x.d}</td><td>${bdTensao(x.f)}</td><td>${x.f}</td><td>${bdDesc(x.dv,true,x.tipo)} <span style="font-size:12px;color:var(--gray-500);margin-left:4px">${x.desc}</span></td><td><span class="bf">${x.fid}</span></td><td>${tipoBadge}</td>`;
+    } else {
+      const prazo=aba==='padrao90'?90:180;
+      tr.innerHTML=`<td>${codBadge}</td><td style="font-weight:600">${x.d}</td><td>${bdTensao(x.f)}</td><td>${x.f}</td><td><span class="bp bp-${prazo}">${prazo} dias</span></td><td>${bdDesc(x.dv,false,'')}</td>`;
+    }
+    tbody.appendChild(tr);
+  });
+
+  const dvs=f.map(x=>x.dv);
+  const max=dvs.length?Math.max(...dvs):0;
+  const min=dvs.length?Math.min(...dvs):0;
+  const med=dvs.length?Math.round(dvs.reduce((a,b)=>a+b,0)/dvs.length):0;
+  document.getElementById('resumo').innerHTML=`
+    <div class="card"><p class="cl">Resultados</p><p class="cv">${f.length}</p></div>
+    <div class="card"><p class="cl">Maior desconto</p><p class="cv">${max?max+'%':'—'}</p></div>
+    <div class="card"><p class="cl">Menor desconto</p><p class="cv">${min?min+'%':'—'}</p></div>
+    <div class="card"><p class="cl">Desconto médio</p><p class="cv">${med?med+'%':'—'}</p></div>
+  `;
+  document.getElementById('rl').textContent=`${f.length} resultado${f.length!==1?'s':''}`;
+}
+
+popularFiltros(P90);
+atualizar();</script>
+</body>
+</html>
