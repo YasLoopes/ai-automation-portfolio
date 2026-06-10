@@ -29,8 +29,9 @@ flowchart TD
     D --> G[Conferência pós-execução]
     G --> H{Aprovado?}
     H -->|Sim| I[Escala para base completa]
-    H -->|Não| J[Diagnóstico + correção]
-    J --> C
+    H -->|Não| J[Diagnóstico + raio-x do erro]
+    J --> K[Atualiza instrução / registra como skill]
+    K --> C
 ```
 
 **Cinco princípios operacionais:**
@@ -49,6 +50,9 @@ Depois de rodar, o resultado passa por revisão humana antes de ser considerado 
 
 **5. Disciplina de custo e escala.**  
 Antes de qualquer disparo em volume, a base é filtrada para reduzir o alcance ao público de fato relevante — eliminando custo e ruído desnecessários.
+
+**6. Raio-x de erros — transformar falhas em prevenção.**  
+Quando o agente comete um erro, o diagnóstico não para em "corrigi e segui". O erro é analisado: por que aconteceu, em que tipo de instrução ou caso ambíguo, e o que mudaria na instrução para evitar que se repita. O aprendizado é registrado como padrão — uma espécie de skill interna — que passa a guiar execuções futuras do mesmo tipo. Com o tempo, o conjunto de erros mapeados funciona como um protocolo vivo de boas práticas, calibrado pela experiência real em vez de teoria.
 
 ## Resultado quantificado
 

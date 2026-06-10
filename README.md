@@ -15,6 +15,7 @@ Todo o material aqui é baseado em trabalho real: resultados quantificados, arqu
 
 | # | Case | Resultado principal |
 |---|------|---------------------|
+| 00 | [painelOfertas — site interativo de ofertas 2º TRI](https://yasloopes.github.io/ai-automation-portfolio/demo-site-promocional/) | PDF de 7 páginas substituído por site com filtros em tempo real — adotado pelo time comercial e parceiros |
 | 01 | [Agentes de IA no CRM com humano no loop](cases/01-agentes-ia-crm-humano-no-loop.md) | Operações manuais escalonadas com governança — zero dados corrompidos em produção |
 | 02 | [Campanha segmentada: 49% de economia](cases/02-campanha-segmentada-49pct-economia.md) | Filtro de base pré-campanha reduziu disparos de 290 para 143, ~49% de economia |
 | 03 | [Documentação reprodutível: 41 workflows mapeados](cases/03-documentacao-reprodutivel-41-workflows.md) | Inventário vivo de automações — base para transição de time e auditoria de processos |
@@ -59,8 +60,7 @@ Esse padrão está documentado com mais detalhe no [Case 01](cases/01-agentes-ia
 ---
 
 > **Aviso:** todos os dados, ofertas, códigos promocionais e condições exibidos neste repositório são fictícios ou agregados.  
-> Nomes de distribuidoras são informação pública. Nenhuma informação confidencial é exposta.  
-> Ver `SANITIZACAO.md` no repositório privado para o log completo.
+> Nomes de distribuidoras são informação pública. Nenhuma informação confidencial é exposta.
 
 ---
 
