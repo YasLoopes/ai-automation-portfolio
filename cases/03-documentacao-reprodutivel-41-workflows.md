@@ -1,4 +1,4 @@
-# Case 03 — Documentação reprodutível: 41 workflows mapeados
+# Case 03 — Documentação reprodutível: 107 workflows mapeados
 
 ## Contexto
 
