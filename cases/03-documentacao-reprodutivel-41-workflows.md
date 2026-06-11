@@ -53,7 +53,7 @@ O modelo foi depois replicado para a área de Gestão de Clientes (GC), gerando 
 
 ## Resultado quantificado
 
-- **41 workflows** documentados em inventário único, consultável e auditável.
+- **107 workflows** documentados em inventário único, consultável e auditável.
 - Dependências entre fluxos mapeadas visualmente — alterações com visibilidade de impacto.
 - Modelo replicado para GC sem custo adicional de estruturação.
 - Base para o plano de encerramento do programa: inventário foi a fonte para identificar quais fluxos desativar e em qual ordem.
